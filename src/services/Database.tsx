@@ -15,7 +15,7 @@ import { app } from './Firebase';
 
 const db = getFirestore(app);
 
-type User = {
+export type User = {
   userUID: string;
   email: string;
 };

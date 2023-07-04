@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react';
-import { Button } from 'antd';
+import { Space, Button } from 'antd';
 import { useState } from 'react';
-import { getSelf } from '../services/Database';
+import { getSelf, User } from '../services/Database';
 import { adios } from '../services/Authentication';
 
 export const Profile = ({ userUID }: any) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     getSelf(userUID).then((user) => {
       setUser(user);
-      console.log(user);
     });
   }, [userUID]);
 
   return (
     <React.Fragment>
-      <Button onClick={() => adios()}>Sign Out</Button>
+      <Space direction="vertical">
+        {user?.email ? `Hello ${user.email}!` : 'Hello there!'}
+        <Button onClick={() => adios()}>Sign Out</Button>
+      </Space>
     </React.Fragment>
   );
 };
