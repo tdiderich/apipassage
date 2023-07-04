@@ -1,0 +1,18 @@
+rules_version = '2';      
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /credentials/{credentialId} {
+      allow read, write: if request.auth.uid == resource.data.userUID;
+      allow create: if request.auth.uid == request.resource.data.userUID;
+    }
+    match /users/{userId} {
+      allow read, write: if request.auth.uid == userId;
+      allow create: if request.auth.uid == userId;
+    }
+    match /teams/{teamId} {
+      allow read: if request.auth.uid in resource.data.userList;
+      allow write: if request.auth.uid == resource.data.ownerUID || request.auth.uid in resource.data.userList;
+      allow create: if request.auth.uid == request.resource.data.ownerUID;
+    }
+  }
+}

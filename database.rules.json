@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".write": "$uid === auth.uid",
+        ".read": "$uid === auth.uid"
+      }
+    },
+    "credentials": {
+      "$int_uid": {
+        ".write": "auth != null && data.child('userUID').val() === auth.uid || auth != null && newData.exists()",
+        ".read": "data.child('userUID').val() === auth.uid || data.child('teamUID').val() !== null && data.child('teamUID').val() === auth.token.teamUID"
+      }
+    }
+  }
+}

@@ -1,21 +1,118 @@
-import React from 'react';
-import logo from "./assets/transparent-logo.svg";
 import './App.css';
+import { ConfigProvider, theme } from 'antd';
+import { Layout } from './pages/Layout';
+import { Home } from './pages/Home';
+import { SignUp } from './pages/SignUp';
+import { SignIn } from './pages/SignIn';
+import { Credentials } from './pages/Credentials';
+import { Credential } from './pages/Credential';
+import { Teams } from './pages/Teams';
+import { Team } from './pages/Team';
+import { Profile } from './pages/Profile';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate
+} from 'react-router-dom';
+import { useAuthListener } from './services/Authentication';
 
 function App() {
+  const { authenticated, checkingAuthentication, userUID, teamUID } =
+    useAuthListener();
+
+  const ProtectedRoute = ({ children }: any) => {
+    return authenticated ? children : <Navigate to={'/signin'} />;
+  };
+
+  const SkipIfAuthenticatedRoute = ({ children }: any) => {
+    return authenticated ? <Navigate to={'/credentials'} /> : children;
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} alt="logo" />
-        <h1>API Passage</h1>
-        <p>One API For All Of Your Security Tools</p>
-      </header>
-      <header className="App-header">
-        <img src={logo} alt="logo" />
-        <h1>API Passage</h1>
-        <p>One API for all of your security tools</p>
-      </header>
-    </div>
+    <ConfigProvider
+      // for future updates: https://ant.design/docs/react/customize-theme#seedtoken
+      // colors: https://ant.design/docs/react/customize-theme#seedtoken
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorLink: '#854eca'
+        }
+      }}
+    >
+      {!!!checkingAuthentication && (
+        <Router>
+          <Layout authenticated={authenticated}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <SkipIfAuthenticatedRoute>
+                    <Home />
+                  </SkipIfAuthenticatedRoute>
+                }
+              />
+              <Route
+                path="/signup"
+                element={
+                  <SkipIfAuthenticatedRoute>
+                    <SignUp />
+                  </SkipIfAuthenticatedRoute>
+                }
+              />
+              <Route
+                path="/signin"
+                element={
+                  <SkipIfAuthenticatedRoute>
+                    <SignIn />
+                  </SkipIfAuthenticatedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile userUID={userUID} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/credentials"
+                element={
+                  <ProtectedRoute>
+                    <Credentials userUID={userUID} teamUID={teamUID} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/credential/:id"
+                element={
+                  <ProtectedRoute>
+                    <Credential userUID={userUID} teamUID={teamUID} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/teams"
+                element={
+                  <ProtectedRoute>
+                    <Teams userUID={userUID} />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/team/:id"
+                element={
+                  <ProtectedRoute>
+                    <Team teamUID={teamUID} />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Layout>
+        </Router>
+      )}
+    </ConfigProvider>
   );
 }
 
