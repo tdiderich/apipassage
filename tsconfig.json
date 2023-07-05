@@ -16,5 +16,11 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "functions"]
+  "include": ["src", "functions"],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts"
+  ]
 }
