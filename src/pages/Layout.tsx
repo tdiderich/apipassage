@@ -1,5 +1,5 @@
-import React, { ReactNode, Suspense } from 'react';
-import { Link } from 'react-router-dom';
+import React, { ReactNode, Suspense } from "react";
+import { Link } from "react-router-dom";
 import {
   ProfileOutlined,
   HomeOutlined,
@@ -8,59 +8,59 @@ import {
   MenuOutlined,
   LogoutOutlined,
   TeamOutlined,
-  ToolOutlined
-} from '@ant-design/icons';
-import { Dropdown, MenuProps } from 'antd';
-import { adios } from '../services/Authentication';
+  ToolOutlined,
+} from "@ant-design/icons";
+import { Dropdown, MenuProps } from "antd";
+import { adios } from "../services/Authentication";
 
 interface LayoutProps {
   authenticated: boolean;
   children: ReactNode;
 }
 
-const authenticatedItems: MenuProps['items'] = [
+const authenticatedItems: MenuProps["items"] = [
   {
-    key: '1',
+    key: "1",
     label: <Link to="/credentials">Credentials</Link>,
-    icon: <ToolOutlined />
+    icon: <ToolOutlined />,
   },
   {
-    key: '2',
+    key: "2",
     label: <Link to="/teams">Teams</Link>,
-    icon: <TeamOutlined />
+    icon: <TeamOutlined />,
   },
   {
-    key: '3',
+    key: "3",
     label: <Link to="/profile">Profile</Link>,
-    icon: <ProfileOutlined />
+    icon: <ProfileOutlined />,
   },
   {
-    key: '4',
+    key: "4",
     label: (
       <a href="/signin" onClick={adios}>
         Sign out
       </a>
     ),
-    icon: <LogoutOutlined />
-  }
+    icon: <LogoutOutlined />,
+  },
 ];
 
-const unauthenticatedItems: MenuProps['items'] = [
+const unauthenticatedItems: MenuProps["items"] = [
   {
-    key: '1',
+    key: "1",
     label: <Link to="/">Home</Link>,
-    icon: <HomeOutlined />
+    icon: <HomeOutlined />,
   },
   {
-    key: '2',
+    key: "2",
     label: <Link to="/signin">Sign in</Link>,
-    icon: <LoginOutlined />
+    icon: <LoginOutlined />,
   },
   {
-    key: '3',
+    key: "3",
     label: <Link to="/signup">Sign up</Link>,
-    icon: <PlusCircleOutlined />
-  }
+    icon: <PlusCircleOutlined />,
+  },
 ];
 
 export const Layout = ({ authenticated, children }: LayoutProps) => {

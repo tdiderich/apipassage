@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Space, Form, Input, Select, Table } from 'antd';
-import { createOrUpdateCredential, getCredentials } from '../services/Database';
-import type { ColumnsType } from 'antd/es/table';
-import type { TableRowSelection } from 'antd/es/table/interface';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Button, Space, Form, Input, Select, Table } from "antd";
+import { createOrUpdateCredential, getCredentials } from "../services/Database";
+import type { ColumnsType } from "antd/es/table";
+import type { TableRowSelection } from "antd/es/table/interface";
+import { Link } from "react-router-dom";
 
 interface DataType {
   key: string;
@@ -17,44 +17,44 @@ interface DataType {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'name',
-    dataIndex: 'name',
-    key: 'name'
+    title: "name",
+    dataIndex: "name",
+    key: "name",
   },
   {
-    title: 'integrationUID',
-    dataIndex: 'integrationUID',
-    key: 'integrationUID'
+    title: "integrationUID",
+    dataIndex: "integrationUID",
+    key: "integrationUID",
   },
   {
-    title: 'apiKey',
-    dataIndex: 'apiKey',
-    key: 'apiKey'
+    title: "apiKey",
+    dataIndex: "apiKey",
+    key: "apiKey",
   },
   {
-    title: 'teamUID',
-    dataIndex: 'teamUID',
-    key: 'teamUID'
+    title: "teamUID",
+    dataIndex: "teamUID",
+    key: "teamUID",
   },
   {
-    title: 'type',
-    dataIndex: 'type',
-    key: 'type'
+    title: "type",
+    dataIndex: "type",
+    key: "type",
   },
   {
-    title: 'userUID',
-    dataIndex: 'userUID',
-    key: 'userUID'
+    title: "userUID",
+    dataIndex: "userUID",
+    key: "userUID",
   },
   {
-    title: 'actions',
-    key: 'action',
+    title: "actions",
+    key: "action",
     render: (_, record) => (
       <Space size="middle">
         <Link to={`/credential/${record.integrationUID}`}>Edit</Link>
       </Space>
-    )
-  }
+    ),
+  },
 ];
 
 type UserInfoType = {
@@ -71,8 +71,8 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
+        "selectedRows: ",
+        selectedRows,
       );
     },
     onSelect: (record: any, selected: any, selectedRows: any) => {
@@ -80,13 +80,13 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
     },
     onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
       console.log(selected, selectedRows, changeRows);
-    }
+    },
   };
 
   useEffect(() => {
     getCredentials(userUID).then((credentials) => {
       credentials.forEach((element: any) => {
-        element['key'] = element['integrationUID'];
+        element["key"] = element["integrationUID"];
       });
       setLoading(true);
       setCredentials(credentials);
@@ -102,7 +102,7 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
         apiKey: values.apiKey,
         userUID: userUID,
         teamUID: teamUID,
-        integrationUID: null
+        integrationUID: null,
       })
         .then(() => setAddNew(false))
         .catch((error) => console.log(error));
@@ -123,7 +123,7 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             layout="vertical"
-            style={{ alignContent: 'center' }}
+            style={{ alignContent: "center" }}
           >
             <Form.Item
               label="Name"
@@ -131,8 +131,8 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please add a name'
-                }
+                  message: "Please add a name",
+                },
               ]}
             >
               <Input />
@@ -143,8 +143,8 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please select an Integration Type'
-                }
+                  message: "Please select an Integration Type",
+                },
               ]}
             >
               <Select>
@@ -160,8 +160,8 @@ export const Credentials = ({ userUID, teamUID }: UserInfoType) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please add API Key'
-                }
+                  message: "Please add API Key",
+                },
               ]}
             >
               <Input.Password />

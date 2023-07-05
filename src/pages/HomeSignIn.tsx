@@ -1,9 +1,9 @@
-import React from 'react';
-import logo from '../assets/slim-logo-with-name.svg';
-import { Button, Space, Image } from 'antd';
-import { Link } from 'react-router-dom';
+import React from "react";
+import logo from "../assets/slim-logo-with-name.svg";
+import { Button, Space, Image } from "antd";
+import { Link } from "react-router-dom";
 
-export const Home = () => {
+export const HomeLogin = () => {
   return (
     <React.Fragment>
       <Space direction="vertical" size="middle" className="centered">

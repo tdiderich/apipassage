@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Space, Form, Input, Select } from 'antd';
-import { useParams, useNavigate } from 'react-router-dom';
-import { updateTeam, getTeam, TeamType } from '../services/Database';
+import React, { useEffect, useState } from "react";
+import { Button, Space, Form, Input, Select } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
+import { updateTeam, getTeam, TeamType } from "../services/Database";
 
 export const Team = ({ teamUID }: any) => {
   const { id } = useParams();
@@ -28,16 +28,16 @@ export const Team = ({ teamUID }: any) => {
       values.subscription &&
       id
     ) {
-      console.log('attempting update');
+      console.log("attempting update");
       updateTeam({
         name: values.name,
         subscription: values.subscription,
         teamUID: id,
         ownerUID: team.ownerUID,
         userList: team.userList,
-        users: team.users
+        users: team.users,
       } as TeamType)
-        .then(() => navigate('/teams'))
+        .then(() => navigate("/teams"))
         .catch((error) => console.log(error));
     }
   };
@@ -48,7 +48,7 @@ export const Team = ({ teamUID }: any) => {
 
   return (
     <React.Fragment>
-      <h3>{loading ? 'Loading team...' : 'Team'}</h3>
+      <h3>{loading ? "Loading team..." : "Team"}</h3>
       <Space direction="vertical" size="large">
         {!loading && team && (
           <Form
@@ -56,11 +56,11 @@ export const Team = ({ teamUID }: any) => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             layout="vertical"
-            style={{ alignContent: 'center' }}
+            style={{ alignContent: "center" }}
             disabled={loading ? true : undefined}
             initialValues={{
               name: team.name,
-              subscription: team.subscription
+              subscription: team.subscription,
             }}
           >
             <Form.Item
@@ -69,8 +69,8 @@ export const Team = ({ teamUID }: any) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please add a name'
-                }
+                  message: "Please add a name",
+                },
               ]}
             >
               <Input />
@@ -81,8 +81,8 @@ export const Team = ({ teamUID }: any) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please select an Subscription Type'
-                }
+                  message: "Please select an Subscription Type",
+                },
               ]}
             >
               <Select>

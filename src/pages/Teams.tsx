@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Space, Form, Input, Table } from 'antd';
-import { addTeam, getTeams, TeamType } from '../services/Database';
-import type { ColumnsType } from 'antd/es/table';
-import type { TableRowSelection } from 'antd/es/table/interface';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Button, Space, Form, Input, Table } from "antd";
+import { addTeam, getTeams, TeamType } from "../services/Database";
+import type { ColumnsType } from "antd/es/table";
+import type { TableRowSelection } from "antd/es/table/interface";
+import { Link } from "react-router-dom";
 
 interface TeamDataType {
   key: string;
@@ -14,29 +14,29 @@ interface TeamDataType {
 
 const columns: ColumnsType<TeamDataType> = [
   {
-    title: 'name',
-    dataIndex: 'name',
-    key: 'name'
+    title: "name",
+    dataIndex: "name",
+    key: "name",
   },
   {
-    title: 'role',
-    dataIndex: 'role',
-    key: 'role'
+    title: "role",
+    dataIndex: "role",
+    key: "role",
   },
   {
-    title: 'subscription',
-    dataIndex: 'subscription',
-    key: 'subscription'
+    title: "subscription",
+    dataIndex: "subscription",
+    key: "subscription",
   },
   {
-    title: 'actions',
-    key: 'action',
+    title: "actions",
+    key: "action",
     render: (_, record) => (
       <Space size="middle">
         <Link to={`/team/${record.teamUID}`}>Edit</Link>
       </Space>
-    )
-  }
+    ),
+  },
 ];
 
 export const Teams = ({ userUID }: any) => {
@@ -48,8 +48,8 @@ export const Teams = ({ userUID }: any) => {
     onChange: (selectedRowKeys: any, selectedRows: any) => {
       console.log(
         `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
+        "selectedRows: ",
+        selectedRows,
       );
     },
     onSelect: (record: any, selected: any, selectedRows: any) => {
@@ -57,13 +57,13 @@ export const Teams = ({ userUID }: any) => {
     },
     onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
       console.log(selected, selectedRows, changeRows);
-    }
+    },
   };
 
   useEffect(() => {
     getTeams(userUID).then((teams) => {
       teams.forEach((element: any) => {
-        element['key'] = element['teamUID'];
+        element["key"] = element["teamUID"];
       });
       setLoading(true);
       setTeams(teams);
@@ -75,11 +75,11 @@ export const Teams = ({ userUID }: any) => {
     if (values.name) {
       addTeam({
         name: values.name as string,
-        subscription: 'trial',
+        subscription: "trial",
         ownerUID: userUID,
         userList: [userUID],
         users: [],
-        teamUID: undefined
+        teamUID: undefined,
       } as TeamType)
         .then(() => setAddNew(false))
         .catch((error) => console.log(error));
@@ -100,7 +100,7 @@ export const Teams = ({ userUID }: any) => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             layout="vertical"
-            style={{ alignContent: 'center' }}
+            style={{ alignContent: "center" }}
           >
             <Form.Item
               label="Name"
@@ -108,8 +108,8 @@ export const Teams = ({ userUID }: any) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please add a name'
-                }
+                  message: "Please add a name",
+                },
               ]}
             >
               <Input />

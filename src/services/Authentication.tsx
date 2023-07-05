@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -6,10 +6,10 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
-  signOut
-} from 'firebase/auth';
-import { app } from './Firebase';
-import { addUpdateUser, getSelf } from './Database';
+  signOut,
+} from "firebase/auth";
+import { app } from "./Firebase";
+import { addUpdateUser, getSelf } from "./Database";
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth(app);
@@ -21,7 +21,7 @@ type UserPasswordCredentials = {
 
 export const createUserPassword = ({
   email,
-  password
+  password,
 }: UserPasswordCredentials): Promise<boolean> => {
   return new Promise(function (resolve, reject) {
     createUserWithEmailAndPassword(auth, email, password)
@@ -41,7 +41,7 @@ export const createUserPassword = ({
 
 export const signInUserPassword = ({
   email,
-  password
+  password,
 }: UserPasswordCredentials): Promise<boolean | any> => {
   return new Promise(function (resolve, reject) {
     signInWithEmailAndPassword(auth, email, password)
@@ -85,8 +85,8 @@ export const adios = () => {
 export const useAuthListener = (): any => {
   const [authenticated, setAuthenticated] = useState(false);
   const [checkingAuthentication, setCheckingAuthentication] = useState(true);
-  const [userUID, setUserUID] = useState('');
-  const [teamUID, setTeamUID] = useState('');
+  const [userUID, setUserUID] = useState("");
+  const [teamUID, setTeamUID] = useState("");
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

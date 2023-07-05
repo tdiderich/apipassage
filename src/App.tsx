@@ -1,32 +1,34 @@
-import './App.css';
-import { ConfigProvider, theme } from 'antd';
-import { Layout } from './pages/Layout';
-import { Home } from './pages/Home';
-import { SignUp } from './pages/SignUp';
-import { SignIn } from './pages/SignIn';
-import { Credentials } from './pages/Credentials';
-import { Credential } from './pages/Credential';
-import { Teams } from './pages/Teams';
-import { Team } from './pages/Team';
-import { Profile } from './pages/Profile';
+import "./App.css";
+import { ConfigProvider, theme } from "antd";
+import { Layout } from "./pages/Layout";
+import { SignUp } from "./pages/SignUp";
+import { SignIn } from "./pages/SignIn";
+import { Credentials } from "./pages/Credentials";
+import { Credential } from "./pages/Credential";
+import { Teams } from "./pages/Teams";
+import { Team } from "./pages/Team";
+import { Profile } from "./pages/Profile";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
-} from 'react-router-dom';
-import { useAuthListener } from './services/Authentication';
+  Navigate,
+} from "react-router-dom";
+import { useAuthListener } from "./services/Authentication";
+import { HomeLogin } from "./pages/HomeSignIn";
+import { HomeAuthenticated } from "./pages/HomeAuthenticated";
+import { PageNotFound } from "./pages/PageNotFound";
 
 function App() {
   const { authenticated, checkingAuthentication, userUID, teamUID } =
     useAuthListener();
 
   const ProtectedRoute = ({ children }: any) => {
-    return authenticated ? children : <Navigate to={'/signin'} />;
+    return authenticated ? children : <Navigate to={"/signin"} />;
   };
 
   const SkipIfAuthenticatedRoute = ({ children }: any) => {
-    return authenticated ? <Navigate to={'/credentials'} /> : children;
+    return authenticated ? <Navigate to={"/credentials"} /> : children;
   };
 
   return (
@@ -36,8 +38,8 @@ function App() {
       theme={{
         algorithm: theme.darkAlgorithm,
         token: {
-          colorLink: '#854eca'
-        }
+          colorLink: "#854eca",
+        },
       }}
     >
       {!!!checkingAuthentication && (
@@ -46,11 +48,7 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={
-                  <SkipIfAuthenticatedRoute>
-                    <Home />
-                  </SkipIfAuthenticatedRoute>
-                }
+                element={authenticated ? <HomeAuthenticated /> : <HomeLogin />}
               />
               <Route
                 path="/signup"
@@ -108,6 +106,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Layout>
         </Router>

@@ -1,14 +1,14 @@
-import React from 'react';
-import { Button, Space, Form, Input, Image } from 'antd';
-import { googleLogin, signInUserPassword } from '../services/Authentication';
+import React from "react";
+import { Button, Space, Form, Input, Image } from "antd";
+import { googleLogin, signInUserPassword } from "../services/Authentication";
 
-import logo from '../assets/transparent-logo.svg';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import logo from "../assets/transparent-logo.svg";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const SignIn = () => {
   const [signInError, setSignInError] = useState<
-    boolean | 'auth/user-not-found'
+    boolean | "auth/user-not-found"
   >(false);
   const navigate = useNavigate();
 
@@ -16,12 +16,12 @@ export const SignIn = () => {
     if (values.email && values.password) {
       signInUserPassword({
         email: values.email,
-        password: values.password
+        password: values.password,
       })
-        .then(() => navigate('/credentials'))
+        .then(() => navigate("/credentials"))
         .catch((error) => {
-          if (error === 'auth/user-not-found') {
-            setSignInError('auth/user-not-found');
+          if (error === "auth/user-not-found") {
+            setSignInError("auth/user-not-found");
           } else {
             setSignInError(true);
           }
@@ -50,10 +50,10 @@ export const SignIn = () => {
               name="email"
               rules={[
                 {
-                  type: 'email',
+                  type: "email",
                   required: true,
-                  message: 'Please input your email'
-                }
+                  message: "Please input your email",
+                },
               ]}
             >
               <Input />
@@ -65,8 +65,8 @@ export const SignIn = () => {
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password'
-                }
+                  message: "Please input your password",
+                },
               ]}
             >
               <Input.Password />
@@ -79,7 +79,7 @@ export const SignIn = () => {
           <Button onClick={googleLogin}>Sign in with Google</Button>
         </Space>
       )}
-      {!!signInError && signInError === 'auth/user-not-found' && (
+      {!!signInError && signInError === "auth/user-not-found" && (
         <Space direction="vertical" size="middle" className="centered">
           Looks like you don't have an account yet. Please sign up instead.
           <Button>
@@ -87,7 +87,7 @@ export const SignIn = () => {
           </Button>
         </Space>
       )}
-      {!!signInError && signInError !== 'auth/user-not-found' && (
+      {!!signInError && signInError !== "auth/user-not-found" && (
         <Space direction="vertical" size="middle" className="centered">
           Something went wrong. Please try again.
           <Button>

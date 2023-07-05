@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { Space, Button } from 'antd';
-import { useState } from 'react';
-import { getSelf, User } from '../services/Database';
-import { adios } from '../services/Authentication';
+import React, { useEffect } from "react";
+import { Space, Button } from "antd";
+import { useState } from "react";
+import { getSelf, User } from "../services/Database";
+import { adios } from "../services/Authentication";
 
 export const Profile = ({ userUID }: any) => {
   const [user, setUser] = useState<User>();
@@ -16,7 +16,7 @@ export const Profile = ({ userUID }: any) => {
   return (
     <React.Fragment>
       <Space direction="vertical">
-        {user?.email ? `Hello ${user.email}!` : 'Hello there!'}
+        {user?.email ? `Hello ${user.email}!` : "Hello there!"}
         <Button onClick={() => adios()}>Sign Out</Button>
       </Space>
     </React.Fragment>

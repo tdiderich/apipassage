@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Space, Form, Input, Select } from 'antd';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Button, Space, Form, Input, Select } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   createOrUpdateCredential,
   getCredential,
-  CredentialType
-} from '../services/Database';
+  CredentialType,
+} from "../services/Database";
+
+type CredentialFormValues = {
+  name: string;
+  type: "virus-total" | "ip-info" | "runzero";
+  apiKey: string;
+};
 
 export const Credential = ({ userUID, teamUID }: any) => {
   const { id } = useParams();
@@ -21,7 +27,7 @@ export const Credential = ({ userUID, teamUID }: any) => {
     });
   }, [id]);
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: CredentialFormValues) => {
     if (
       credential?.userUID &&
       credential?.teamUID &&
@@ -36,9 +42,9 @@ export const Credential = ({ userUID, teamUID }: any) => {
         apiKey: values.apiKey,
         userUID: credential.userUID,
         teamUID: credential.teamUID,
-        integrationUID: id
+        integrationUID: id,
       })
-        .then(() => navigate('/credentials'))
+        .then(() => navigate("/credentials"))
         .catch((error) => console.log(error));
     }
   };
@@ -49,7 +55,7 @@ export const Credential = ({ userUID, teamUID }: any) => {
 
   return (
     <React.Fragment>
-      <h3>{loading ? 'Loading credential...' : 'Credential'}</h3>
+      <h3>{loading ? "Loading credential..." : "Credential"}</h3>
       <Space direction="vertical" size="large">
         {!loading && credential && (
           <Form
@@ -57,12 +63,12 @@ export const Credential = ({ userUID, teamUID }: any) => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             layout="vertical"
-            style={{ alignContent: 'center' }}
+            style={{ alignContent: "center" }}
             disabled={loading ? true : undefined}
             initialValues={{
               name: credential.name,
               apiKey: credential.apiKey,
-              type: credential.type
+              type: credential.type,
             }}
           >
             <Form.Item
@@ -71,8 +77,8 @@ export const Credential = ({ userUID, teamUID }: any) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please add a name'
-                }
+                  message: "Please add a name",
+                },
               ]}
             >
               <Input />
@@ -83,8 +89,8 @@ export const Credential = ({ userUID, teamUID }: any) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please select an Integration Type'
-                }
+                  message: "Please select an Integration Type",
+                },
               ]}
             >
               <Select>
@@ -100,8 +106,8 @@ export const Credential = ({ userUID, teamUID }: any) => {
               rules={[
                 {
                   required: true,
-                  message: 'Please add API Key'
-                }
+                  message: "Please add API Key",
+                },
               ]}
             >
               <Input.Password />

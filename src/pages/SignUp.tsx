@@ -1,9 +1,9 @@
-import React from 'react';
-import { Button, Space, Form, Input, Image } from 'antd';
-import { googleLogin, createUserPassword } from '../services/Authentication';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../assets/transparent-logo.svg';
+import React from "react";
+import { Button, Space, Form, Input, Image } from "antd";
+import { googleLogin, createUserPassword } from "../services/Authentication";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/transparent-logo.svg";
 
 export const SignUp = () => {
   const [signUpError, setSignUpError] = useState(false);
@@ -13,11 +13,11 @@ export const SignUp = () => {
     if (values.email && values.password) {
       createUserPassword({
         email: values.email,
-        password: values.password
+        password: values.password,
       })
         .then((success) => {
           if (success) {
-            navigate('/credentials');
+            navigate("/credentials");
           }
         })
         .catch(() => setSignUpError(true));
@@ -44,10 +44,10 @@ export const SignUp = () => {
               name="email"
               rules={[
                 {
-                  type: 'email',
+                  type: "email",
                   required: true,
-                  message: 'Please input your email'
-                }
+                  message: "Please input your email",
+                },
               ]}
             >
               <Input />
@@ -60,8 +60,8 @@ export const SignUp = () => {
                 {
                   required: true,
                   min: 12,
-                  message: 'Minimum 12 characters'
-                }
+                  message: "Minimum 12 characters",
+                },
               ]}
             >
               <Input.Password />
@@ -78,7 +78,7 @@ export const SignUp = () => {
         <Space
           direction="vertical"
           size="middle"
-          style={{ textAlign: 'center', color: 'white' }}
+          style={{ textAlign: "center", color: "white" }}
         >
           There was an error. Please try again.
           <Button>

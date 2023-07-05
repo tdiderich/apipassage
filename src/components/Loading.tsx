@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 interface LoadingProps {
   text?: string;
@@ -17,7 +17,7 @@ export const Loading = ({ text }: LoadingProps) => {
           duration: 1,
           ease: [0.075, 0.82, 0.165, 1],
           repeat: Infinity,
-          repeatType: 'reverse'
+          repeatType: "reverse",
         }}
       />
     </div>

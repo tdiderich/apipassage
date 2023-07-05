@@ -1,4 +1,4 @@
-// 
+//
 export const firebaseConfig = {
   apiKey: "UPDATE_ME",
   authDomain: "UPDATE_ME",
