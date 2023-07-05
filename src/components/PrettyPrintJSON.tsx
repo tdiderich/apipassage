@@ -1,9 +1,8 @@
 import React from "react";
+import { Space } from "antd";
 
 export const PrettyPrintJson = ({ json, className }: any) => (
-  <div
-    className={`dark:text-white text-black dark:bg-black bg-white${className}`}
-  >
+  <Space>
     <pre>{JSON.stringify(json, null, 2)}</pre>
-  </div>
+  </Space>
 );

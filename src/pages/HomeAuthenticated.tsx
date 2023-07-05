@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Space, Form, Input, Select } from "antd";
-import { PrettyPrintJson } from "../components/PrettyPrintJSON";
 import axios from "axios";
 
+const { TextArea } = Input;
 interface SingleSecuritySearchResponse {
   vendor: string;
   data: Object;
@@ -18,15 +18,21 @@ const onFinishFailed = (errorInfo: any) => {
 
 export const HomeAuthenticated = () => {
   const [loading, setLoading] = useState(false);
-  const [results, setSecuritySearchResults] = useState<any>();
+  const [results, setSecuritySearchResults] =
+    useState<CompleteSecuritySearchResponse>();
 
   const onFinish = (values: any) => {
+    console.log(values.search);
     runSecuritySearch(values.search);
   };
 
+  useEffect(() => {
+    console.log(results);
+  }, [results]);
+
   const runSecuritySearch = async (ipAddress: string) => {
     setLoading(true);
-    const url = "https://tylerdiderich.com/api/search/ip";
+    const url = "https://apipassage.com/api/search/ip";
     axios
       .get<CompleteSecuritySearchResponse>(url, {
         headers: {
@@ -35,6 +41,7 @@ export const HomeAuthenticated = () => {
         params: { ipAddress: ipAddress },
       })
       .then((response) => {
+        console.log(response.data);
         setSecuritySearchResults(response.data);
       })
       .then(() => setLoading(false))
@@ -84,8 +91,10 @@ export const HomeAuthenticated = () => {
             <Button htmlType="submit">Search</Button>
           </Form.Item>
         </Form>
-        {results && !loading && <PrettyPrintJson json={results} />}
       </Space>
+      {results && !loading && (
+        <TextArea value={JSON.stringify(results, null, 2)} autoSize={true} />
+      )}
     </React.Fragment>
   );
 };
