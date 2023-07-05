@@ -12,18 +12,6 @@ interface CompleteSecuritySearchResponse {
   data?: SingleSecuritySearchResponse[];
 }
 
-type SecuritySearchFormValues = {
-  ipAddress: string;
-};
-
-type UrlParams = {
-  ipAddress?: string;
-};
-
-const onFinish = (values: any) => {
-  console.log("Success:", values);
-};
-
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
@@ -31,6 +19,10 @@ const onFinishFailed = (errorInfo: any) => {
 export const HomeAuthenticated = () => {
   const [loading, setLoading] = useState(false);
   const [results, setSecuritySearchResults] = useState<any>();
+
+  const onFinish = (values: any) => {
+    runSecuritySearch(values.search);
+  };
 
   const runSecuritySearch = async (ipAddress: string) => {
     setLoading(true);
@@ -92,7 +84,7 @@ export const HomeAuthenticated = () => {
             <Button htmlType="submit">Search</Button>
           </Form.Item>
         </Form>
-        {results && <PrettyPrintJson json={results} />}
+        {results && !loading && <PrettyPrintJson json={results} />}
       </Space>
     </React.Fragment>
   );
