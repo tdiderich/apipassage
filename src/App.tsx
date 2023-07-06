@@ -28,7 +28,7 @@ function App() {
   };
 
   const SkipIfAuthenticatedRoute = ({ children }: any) => {
-    return authenticated ? <Navigate to={"/credentials"} /> : children;
+    return authenticated ? <Navigate to={"/"} /> : children;
   };
 
   return (
