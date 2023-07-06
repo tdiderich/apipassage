@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Space, Form, Input, Select } from "antd";
+import { getCredentials } from "../services/Database";
 import axios from "axios";
 
 const { TextArea } = Input;
@@ -12,41 +13,55 @@ interface CompleteSecuritySearchResponse {
   data?: SingleSecuritySearchResponse[];
 }
 
+interface SearchForm {
+  type: "ip" | "hostname" | "mac";
+  search: string;
+}
+
 const onFinishFailed = (errorInfo: any) => {
   console.log("Failed:", errorInfo);
 };
 
-export const HomeAuthenticated = () => {
+export const HomeAuthenticated = ({ userUID }: any) => {
   const [loading, setLoading] = useState(false);
   const [results, setSecuritySearchResults] =
     useState<CompleteSecuritySearchResponse>();
-
-  const onFinish = (values: any) => {
-    console.log(values.search);
-    runSecuritySearch(values.search);
-  };
+  const [credentials, setCredentials] = useState();
 
   useEffect(() => {
-    console.log(results);
-  }, [results]);
+    getCredentials(userUID).then((credentials) => {
+      credentials.forEach((element: any) => {
+        element["key"] = element["integrationUID"];
+      });
+      setLoading(true);
+      setCredentials(credentials);
+      setLoading(false);
+    });
+  }, [userUID]);
 
-  const runSecuritySearch = async (ipAddress: string) => {
+  const onFinish = async (values: SearchForm) => {
     setLoading(true);
-    const url = "https://apipassage.com/api/search/ip";
+    const url = window.location.href.includes("localhost")
+      ? "http://localhost:5001/apipassage/us-central1/securitySearch"
+      : "https://apipassage.com/api/search";
     axios
       .get<CompleteSecuritySearchResponse>(url, {
         headers: {
           "Access-Control-Allow-Origin": "*",
         },
-        params: { ipAddress: ipAddress },
+        params: {
+          type: values.type,
+          search: values.search,
+          credentials: credentials,
+        },
       })
       .then((response) => {
-        console.log(response.data);
         setSecuritySearchResults(response.data);
       })
       .then(() => setLoading(false))
       .catch((error) => console.log(error));
   };
+
   return (
     <React.Fragment>
       <Space direction="vertical" size="middle" className="centered">
@@ -55,7 +70,6 @@ export const HomeAuthenticated = () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
           layout="vertical"
-          className="centered"
           initialValues={{ type: "ip" }}
         >
           <Form.Item
@@ -67,6 +81,7 @@ export const HomeAuthenticated = () => {
                 message: "Please select a search type",
               },
             ]}
+            style={{ textAlign: "left" }}
           >
             <Select>
               <Select.Option value="ip">IP Address</Select.Option>

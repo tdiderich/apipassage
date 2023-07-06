@@ -48,7 +48,13 @@ function App() {
             <Routes>
               <Route
                 path="/"
-                element={authenticated ? <HomeAuthenticated /> : <HomeLogin />}
+                element={
+                  authenticated ? (
+                    <HomeAuthenticated userUID={userUID} />
+                  ) : (
+                    <HomeLogin />
+                  )
+                }
               />
               <Route
                 path="/signup"

@@ -7,24 +7,35 @@ const cors = require("cors")({ origin: true });
 export const securitySearch = functions.https.onRequest(
   (request: any, response: any) => {
     cors(request, response, async () => {
-      const ipAddress = request.query.ipAddress || "";
-      let virusTotalResponse = {};
-      let ipInfoResponse = {};
-      await getVirusTotalResponse(ipAddress).then((response) => {
-        virusTotalResponse = response.data;
-      });
-      getIpInfoResponse(ipAddress)
-        .then((response) => {
-          ipInfoResponse = response;
-        })
-        .then(() =>
-          response.send({
-            data: [
-              { vendor: "IpInfo", data: ipInfoResponse },
-              { vendor: "Virus Total", data: virusTotalResponse },
-            ],
-          }),
+      const type = request.query.type;
+      const search = request.query.search;
+      const credentials = request.query.credentials;
+
+      if (type && search && credentials) {
+        let data: any = {};
+
+        await credentials.forEach(
+          async (
+            cred: { type: string; name: string; apiKey: string },
+            i: number,
+          ) => {
+            if (cred.type == "ip-info") {
+              await getIpInfoResponse(search).then((response) => {
+                const name = cred.name || `ip-info-${i}`;
+                data[name] = response;
+              });
+            } else if (cred.type == "virus-total") {
+              await getVirusTotalResponse(search).then((response) => {
+                const name = cred.name || `virus-total-${i}`;
+                data[name] = response;
+              });
+            }
+          },
         );
+        response.send(data);
+      } else {
+        response.status(404).send("Missing type, search, or credentials");
+      }
     });
   },
 );

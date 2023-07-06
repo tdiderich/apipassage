@@ -7,10 +7,17 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "typeRoots": ["node_modules/@types"],
-    "types": ["gapi", "gapi.auth2", "gapi.client.gmail"]
+    "skipLibCheck": true,
+    "types": []
   },
   "compileOnSave": true,
   "include": ["src"],
-  "types": ["gapi", "gapi.auth2", "gapi.client.gmail"]
+  "jsx": "react-jsx",
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts",
+    "node_modules/@types/express-serve-static-core/index.d.ts"
+  ]
 }
