@@ -24,9 +24,8 @@ const onFinishFailed = (errorInfo: any) => {
 
 export const HomeAuthenticated = ({ userUID }: any) => {
   const [loading, setLoading] = useState(false);
-  const [results, setSecuritySearchResults] =
-    useState<CompleteSecuritySearchResponse>();
-  const [credentials, setCredentials] = useState();
+  const [results, setSecuritySearchResults] = useState<any>();
+  const [credentials, setCredentials] = useState([]);
 
   useEffect(() => {
     getCredentials(userUID).then((credentials) => {
@@ -107,9 +106,24 @@ export const HomeAuthenticated = ({ userUID }: any) => {
           </Form.Item>
         </Form>
       </Space>
-      {results && !loading && (
-        <TextArea value={JSON.stringify(results, null, 2)} autoSize={true} />
-      )}
+      {results &&
+        !loading &&
+        credentials &&
+        credentials.map((cred: { name: string }, i) => {
+          if (results[cred.name] !== undefined) {
+            return (
+              <div key={`search-out-${i}`}>
+                <p>{cred.name}</p>
+                <TextArea
+                  value={JSON.stringify(results[cred.name], null, 2)}
+                  autoSize={{ minRows: 2, maxRows: 10 }}
+                />
+              </div>
+            );
+          } else {
+            return null;
+          }
+        })}
     </React.Fragment>
   );
 };

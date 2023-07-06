@@ -10,32 +10,31 @@ export const securitySearch = functions.https.onRequest(
       const type = request.query.type;
       const search = request.query.search;
       const credentials = request.query.credentials;
+      let promises: Promise<any>[] = [];
 
       if (type && search && credentials) {
-        let data: any = {};
-
-        await credentials.forEach(
-          async (
-            cred: { type: string; name: string; apiKey: string },
-            i: number,
-          ) => {
+        credentials.forEach(
+          (cred: { type: string; name: string; apiKey: string }, i: number) => {
             if (cred.type == "ip-info") {
-              await getIpInfoResponse(search).then((response) => {
-                const name = cred.name || `ip-info-${i}`;
-                data[name] = response;
-              });
+              promises.push(getIpInfoResponse(search, cred.apiKey, cred.name));
             } else if (cred.type == "virus-total") {
-              await getVirusTotalResponse(search).then((response) => {
-                const name = cred.name || `virus-total-${i}`;
-                data[name] = response;
-              });
+              promises.push(
+                getVirusTotalResponse(search, cred.apiKey, cred.name),
+              );
             }
           },
         );
-        response.send(data);
       } else {
         response.status(404).send("Missing type, search, or credentials");
       }
+
+      Promise.allSettled(promises).then((data) => {
+        let resp: any = {};
+        data.forEach((r: any, i: any) => {
+          resp[r.value.name] = r.value.data;
+        });
+        response.status(200).send(resp);
+      });
     });
   },
 );
