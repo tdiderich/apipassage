@@ -33,7 +33,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && cd functions && npm run build && cd .. && git add . && git commit -m 'public updates' && git push && firebase deploy"
+    "deploy": "npm run build && cd functions && npm run build && firebase deploy && cd .. && git add . && git commit -m 'public updates' && git push"
   },
   "eslintConfig": {
     "extends": [

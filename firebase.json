@@ -4,7 +4,7 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "/api/search/ip",
+        "source": "/api/search",
         "function": "securitySearch"
       },
       {
