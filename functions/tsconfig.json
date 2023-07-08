@@ -8,7 +8,8 @@
     "strict": true,
     "target": "es2017",
     "skipLibCheck": true,
-    "types": []
+    "types": [],
+    "jsx": "react"
   },
   "compileOnSave": true,
   "include": ["src"],

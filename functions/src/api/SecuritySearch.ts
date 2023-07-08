@@ -1,40 +1,47 @@
 /* eslint-disable */
-import * as functions from "firebase-functions";
+import { onRequest } from "firebase-functions/v2/https";
 import { getIpInfoResponse } from "../helpers/IpInfo";
 import { getVirusTotalResponse } from "../helpers/VirusTotal";
+import { getRunZeroResponse } from "../helpers/RunZero";
+
 const cors = require("cors")({ origin: true });
 
-export const securitySearch = functions.https.onRequest(
-  (request: any, response: any) => {
-    cors(request, response, async () => {
-      const type = request.query.type;
-      const search = request.query.search;
-      const credentials = request.query.credentials;
-      let promises: Promise<any>[] = [];
+export const search = onRequest((request: any, response: any) => {
+  cors(request, response, async () => {
+    const type = request.body.params.type;
+    const search = request.body.params.search;
+    const credentials = request.body.data.credentials;
 
-      if (type && search && credentials) {
-        credentials.forEach(
-          (cred: { type: string; name: string; apiKey: string }, i: number) => {
-            if (cred.type == "ip-info") {
-              promises.push(getIpInfoResponse(search, cred.apiKey, cred.name));
-            } else if (cred.type == "virus-total") {
-              promises.push(
-                getVirusTotalResponse(search, cred.apiKey, cred.name),
-              );
-            }
-          },
-        );
-      } else {
-        response.status(404).send("Missing type, search, or credentials");
-      }
+    let promises: Promise<any>[] = [];
 
-      Promise.allSettled(promises).then((data) => {
-        let resp: any = {};
-        data.forEach((r: any, i: any) => {
-          resp[r.value.name] = r.value.data;
-        });
-        response.status(200).send(resp);
+    if (type && search && credentials) {
+      credentials.forEach(
+        (cred: { type: string; name: string; apiKey: string }, i: number) => {
+          if (cred.type == "ip-info") {
+            promises.push(
+              getIpInfoResponse(search, cred.apiKey, cred.name, type),
+            );
+          } else if (cred.type == "virus-total") {
+            promises.push(
+              getVirusTotalResponse(search, cred.apiKey, cred.name),
+            );
+          } else if (cred.type == "runzero") {
+            promises.push(
+              getRunZeroResponse(search, cred.apiKey, cred.name, type),
+            );
+          }
+        },
+      );
+    } else {
+      response.status(404).send("Missing type, search, or credentials");
+    }
+
+    Promise.allSettled(promises).then((data) => {
+      let resp: any = {};
+      data.forEach((r: any, i: any) => {
+        resp[r.value.name] = r.value.data;
       });
+      response.status(200).send(resp);
     });
-  },
-);
+  });
+});

@@ -5,9 +5,16 @@ export const getIpInfoResponse = async (
   ipAddress: any,
   apiKey: string,
   name: string,
+  type: string,
 ) => {
   const ipInfoWrapper = new IPinfoWrapper(apiKey);
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
+    if (type !== "ip") {
+      resolve({
+        name: name,
+        data: { error: "Only IP search type supported for IPInfo" },
+      });
+    }
     ipInfoWrapper
       .lookupIp(ipAddress)
       .then((data) => {
@@ -17,7 +24,10 @@ export const getIpInfoResponse = async (
         });
       })
       .catch((error) => {
-        reject(error);
+        resolve({
+          name: name,
+          data: error,
+        });
       });
   });
 };

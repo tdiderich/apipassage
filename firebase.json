@@ -5,7 +5,7 @@
     "rewrites": [
       {
         "source": "/api/search",
-        "function": "securitySearch"
+        "function": "search"
       },
       {
         "source": "**",

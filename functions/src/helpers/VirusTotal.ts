@@ -6,12 +6,12 @@ interface VirusTotalResponse {
 }
 
 export const getVirusTotalResponse = async (
-  ipAddress: string,
+  search: string,
   apiKey: string,
   name: string,
 ) => {
-  const url = `https://www.virustotal.com/api/v3/ip_addresses/${ipAddress}`;
-  return new Promise((resolve, reject) => {
+  const url = `https://www.virustotal.com/api/v3/search?query=${search}`;
+  return new Promise((resolve) => {
     axios
       .get<VirusTotalResponse>(url, {
         headers: {
@@ -21,11 +21,14 @@ export const getVirusTotalResponse = async (
       .then((data) => {
         resolve({
           name: name,
-          data: data.data,
+          data: data.data.data,
         });
       })
       .catch((error) => {
-        reject(error);
+        resolve({
+          name: name,
+          data: error,
+        });
       });
   });
 };

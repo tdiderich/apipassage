@@ -41,16 +41,20 @@ export const HomeAuthenticated = ({ userUID }: any) => {
   const onFinish = async (values: SearchForm) => {
     setLoading(true);
     const url = window.location.href.includes("localhost")
-      ? "http://localhost:5001/apipassage/us-central1/securitySearch"
+      ? "http://localhost:5001/apipassage/us-central1/search"
       : "https://apipassage.com/api/search";
     axios
-      .get<CompleteSecuritySearchResponse>(url, {
+      .post<CompleteSecuritySearchResponse>(url, {
         headers: {
           "Access-Control-Allow-Origin": "*",
+          credentials: credentials,
         },
         params: {
           type: values.type,
           search: values.search,
+          credentials: credentials,
+        },
+        data: {
           credentials: credentials,
         },
       })
