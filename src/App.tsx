@@ -8,6 +8,7 @@ import { Credential } from "./pages/Credential";
 import { Teams } from "./pages/Teams";
 import { Team } from "./pages/Team";
 import { Profile } from "./pages/Profile";
+import { Verify } from "./pages/Verify";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,11 +21,23 @@ import { HomeAuthenticated } from "./pages/HomeAuthenticated";
 import { PageNotFound } from "./pages/PageNotFound";
 
 function App() {
-  const { authenticated, checkingAuthentication, userUID, teamUID } =
-    useAuthListener();
+  const {
+    authenticated,
+    checkingAuthentication,
+    userUID,
+    teamUID,
+    verified,
+    user,
+  } = useAuthListener();
 
   const ProtectedRoute = ({ children }: any) => {
-    return authenticated ? children : <Navigate to={"/signin"} />;
+    return authenticated && verified ? (
+      children
+    ) : authenticated && user !== null ? (
+      <Verify />
+    ) : (
+      <Navigate to={"/signin"} />
+    );
   };
 
   const SkipIfAuthenticatedRoute = ({ children }: any) => {

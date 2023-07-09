@@ -1,6 +1,10 @@
 import React from "react";
 import { Button, Space, Form, Input, Image } from "antd";
-import { googleLogin, createUserPassword } from "../services/Authentication";
+import {
+  googleLogin,
+  microsoftLogin,
+  createUserPassword,
+} from "../services/Authentication";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/transparent-logo.svg";
@@ -72,6 +76,7 @@ export const SignUp = () => {
             </Form.Item>
           </Form>
           <Button onClick={googleLogin}>Sign up with Google</Button>
+          <Button onClick={microsoftLogin}>Sign up with Microsoft</Button>
         </Space>
       )}
       {!!signUpError && (

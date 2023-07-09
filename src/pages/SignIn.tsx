@@ -1,6 +1,10 @@
 import React from "react";
 import { Button, Space, Form, Input, Image } from "antd";
-import { googleLogin, signInUserPassword } from "../services/Authentication";
+import {
+  googleLogin,
+  microsoftLogin,
+  signInUserPassword,
+} from "../services/Authentication";
 
 import logo from "../assets/transparent-logo.svg";
 import { useState } from "react";
@@ -77,6 +81,7 @@ export const SignIn = () => {
             </Form.Item>
           </Form>
           <Button onClick={googleLogin}>Sign in with Google</Button>
+          <Button onClick={microsoftLogin}>Sign in with Microsoft</Button>
         </Space>
       )}
       {!!signInError && signInError === "auth/user-not-found" && (
